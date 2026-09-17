@@ -14,10 +14,10 @@ Explore NPUs, AI processors, and on-device AI hardware.
 
 ## Learn
 
-- What is an NPU?
-- NPU vs GPU
-- What does TOPS mean?
-- How does on-device AI work?
+- [What is an NPU?](/learn/what-is-an-npu/)
+- [NPU vs GPU](/learn/npu-vs-gpu/)
+- [What is TOPS?](/learn/what-is-tops/)
+
 
 ## About
 
