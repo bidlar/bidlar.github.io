@@ -1,0 +1,20 @@
+site_name: NPU.TOP
+theme:
+  name: material
+  icon:
+    logo: material/github 
+  palette:
+    primary: white
+    accent: grey
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.instant
+    - search.highlight
+    - search.suggest
+copyright: ' © 2026 NPU.TOP. All rights reserved.'
+extra_css:
+    - stylesheets/extra.css
