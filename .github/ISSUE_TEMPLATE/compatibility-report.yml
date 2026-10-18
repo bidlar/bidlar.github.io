@@ -1,0 +1,121 @@
+name: Model compatibility report
+description: Share a documented configuration or a test result. Submissions are not automatically verified.
+title: "[Compatibility] <model> on <processor>"
+body:
+  - type: dropdown
+    id: evidence-source
+    attributes:
+      label: Evidence source
+      description: Choose the basis of this report. A documentation claim and a device test are different evidence.
+      options:
+        - Official documentation
+        - Community test
+    validations:
+      required: true
+  - type: textarea
+    id: model
+    attributes:
+      label: Model and artifact
+      description: Give the full model name, repository URL, exact revision or release, artifact format, and quantization. Use "not specified" for details absent from official sources.
+      placeholder: |
+        Model:
+        Repository URL:
+        Revision or release:
+        Artifact format:
+        Quantization:
+    validations:
+      required: true
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Device
+      description: Identify the exact processor, NPU, and installed RAM. For documentation reports, record only the stated hardware scope; use "not specified" where needed.
+      placeholder: |
+        Processor:
+        NPU:
+        RAM:
+    validations:
+      required: true
+  - type: input
+    id: operating-system
+    attributes:
+      label: Operating system
+      description: Include the OS version, build, and architecture. Use "not specified" if the official source omits them.
+      placeholder: OS / version / build / architecture
+    validations:
+      required: true
+  - type: input
+    id: driver
+    attributes:
+      label: NPU driver version
+      description: Give the exact version and, if available, the official download URL. Use "not specified" for undocumented details.
+    validations:
+      required: true
+  - type: textarea
+    id: runtime
+    attributes:
+      label: Runtime and dependencies
+      description: List exact runtime, backend, and relevant dependency versions, including conversion tools if used. Avoid "latest"; use "not specified" for undocumented versions.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Installation and reproduction steps
+      description: Include ordered steps, commands, and relevant settings such as context length and output length. If untested, write "not tested" and link the documented procedure. Remove credentials and private paths.
+      placeholder: |
+        1. Install dependencies:
+        2. Obtain or convert the model:
+        3. Run the model with these arguments:
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: Test result
+      description: Report the actual outcome. Select "Not tested" when submitting official documentation without a device test.
+      options:
+        - Success
+        - Partial
+        - Failure
+        - Not tested
+    validations:
+      required: true
+  - type: dropdown
+    id: execution-device
+    attributes:
+      label: Observed execution device
+      description: Choose NPU or hybrid only when execution evidence supports it. A requested device is not proof of execution. Use "Unknown" for untested reports or inconclusive evidence.
+      options:
+        - NPU
+        - Hybrid
+        - CPU/GPU only
+        - Unknown
+    validations:
+      required: true
+  - type: textarea
+    id: execution-evidence
+    attributes:
+      label: Output and NPU execution evidence
+      description: Include redacted output, errors, device-assignment or profiling logs, and any fallback information. Write "not tested" for untested reports. Never paste API keys, access tokens, passwords, or other secrets.
+    validations:
+      required: true
+  - type: input
+    id: test-date
+    attributes:
+      label: Test date
+      description: Use YYYY-MM-DD for the actual test date, or "not tested" for a documentation-only report.
+      placeholder: YYYY-MM-DD or not tested
+    validations:
+      required: true
+  - type: textarea
+    id: sources-and-limits
+    attributes:
+      label: Sources and known limits
+      description: Link supporting sources and record when you checked them. Describe restrictions, unresolved problems, or departures from the documented setup. Use "unknown" when limits have not been assessed.
+      placeholder: |
+        Source URLs and access dates:
+        Known limits or unresolved issues:
+        Differences from the documented configuration:
+    validations:
+      required: true
