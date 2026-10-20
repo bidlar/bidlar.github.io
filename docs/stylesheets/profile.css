@@ -1,0 +1,72 @@
+.npu-profile {
+  max-width: 44rem;
+  margin: 1.5rem 0 3rem;
+}
+.npu-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 2rem;
+  border: 1px solid var(--md-default-fg-color--lightest, #8884);
+  border-radius: .8rem;
+  background: var(--md-default-bg-color, #fff);
+}
+.npu-profile-avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 6rem;
+  width: 6rem;
+  height: 6rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--md-code-bg-color, #eee);
+  font-size: 2rem;
+  font-weight: 600;
+}
+.npu-profile-avatar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.npu-profile-info { min-width: 0; }
+.npu-profile .npu-profile-eyebrow {
+  margin: 0 0 .35rem;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  color: var(--md-default-fg-color--light, #666);
+}
+.npu-profile .npu-profile-name {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.npu-profile .npu-profile-description {
+  margin: .45rem 0 0;
+  color: var(--md-default-fg-color--light, #666);
+  font-size: .8rem;
+}
+.npu-profile-actions { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1rem; }
+.npu-profile button {
+  padding: .55rem 1rem;
+  border: 1px solid var(--md-default-fg-color--lighter, #8888);
+  border-radius: .35rem;
+  background: var(--md-default-bg-color, #fff);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+.npu-profile button:hover { background: var(--md-code-bg-color, #eee); }
+.npu-profile button:focus-visible { outline: 2px solid var(--md-accent-fg-color, #555); outline-offset: 3px; }
+.npu-profile button:disabled { opacity: .6; cursor: wait; }
+.npu-profile [hidden] { display: none !important; }
+.npu-profile-message { min-height: 1.5em; font-size: .8rem; }
+.doc-community .profile-link { display: inline-block; margin: .4rem .6rem .4rem 0; }
+.doc-community .profile-link[hidden] { display: none; }
+@media (max-width: 480px) {
+  .npu-profile-card { align-items: flex-start; flex-direction: column; padding: 1.2rem; }
+}

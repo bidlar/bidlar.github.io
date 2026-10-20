@@ -1,6 +1,8 @@
 site_name: NPU.TOP
+site_url: https://npu.top/
 theme:
   name: material
+  variant: modern
   icon:
     logo: material/github 
   palette:
@@ -18,3 +20,8 @@ theme:
 copyright: ' © 2026 NPU.TOP. All rights reserved.'
 extra_css:
     - stylesheets/extra.css
+    - stylesheets/community.css
+    - stylesheets/profile.css
+extra_javascript:
+    - https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
+    - javascripts/community.js

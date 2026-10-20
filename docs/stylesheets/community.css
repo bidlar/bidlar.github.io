@@ -1,0 +1,8 @@
+.doc-community { border-top: 1px solid #8885; margin-top: 2rem; padding-top: 1rem; }
+.doc-community button { border: 1px solid #8888; border-radius: .3rem; padding: .35rem .7rem; margin: .2rem .4rem .2rem 0; cursor: pointer; }
+.doc-community button:disabled { opacity: .5; cursor: default; }
+.doc-community textarea { display: block; width: 100%; border: 1px solid #8888; border-radius: .3rem; padding: .6rem; background: transparent; color: inherit; }
+.doc-community article { padding: .7rem 0; border-bottom: 1px solid #8884; }
+.doc-community article p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.doc-community small { opacity: .7; }
+.doc-community [role="status"] { min-height: 1.5em; }

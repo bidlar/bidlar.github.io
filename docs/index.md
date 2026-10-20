@@ -4,3 +4,5 @@
 
 NPU.top (NPU.tech) is a website about the NPU ecosystem. Its goal is to build an open, community-driven developer site, including features such as NPU hardware and AI model compatibility.
 
+<div class="doc-community" data-page-id="home"></div>
+

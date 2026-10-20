@@ -25,3 +25,5 @@ It can be used to test speech recognition, image segmentation, text-to-image gen
 ## Submit Your Data
 
 After you complete the tests, you can submit the data to [GitHub Issues](https://github.com/bidlar/bidlar.github.io/issues). Thank you again for your support and participation.
+
+<div class="doc-community" data-page-id="contribute"></div>
