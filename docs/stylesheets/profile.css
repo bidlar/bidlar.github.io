@@ -65,8 +65,6 @@
 .npu-profile button:disabled { opacity: .6; cursor: wait; }
 .npu-profile [hidden] { display: none !important; }
 .npu-profile-message { min-height: 1.5em; font-size: .8rem; }
-.doc-community .profile-link { display: inline-block; margin: .4rem .6rem .4rem 0; }
-.doc-community .profile-link[hidden] { display: none; }
 @media (max-width: 480px) {
   .npu-profile-card { align-items: flex-start; flex-direction: column; padding: 1.2rem; }
 }

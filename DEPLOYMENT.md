@@ -67,7 +67,8 @@ mkdocs.yml 中 site_url 为 https://npu.top/。docs/CNAME 内容为 npu.top；�
 - GitHub 登录提供商、Site URL 和 Redirect URLs 仍需在 Supabase 配置。
 - 若尚未启用审核，先在 Supabase 执行 supabase/moderation.sql；当前页面会读取 status 列。
 - 已启用审核后，批准评论和封禁账号不需要重新部署。
-- 个人主页读取当前登录账号的 GitHub 名字和头像，无需额外建表。
+- 评论作者姓名和公开个人主页需要先在 Supabase 执行 `supabase/profiles.sql`，操作与验证见 `supabase/PROFILES.md`。该脚本会回填已有 GitHub 用户的名字和头像，并自动同步后续登录更新。
+- `/profile/` 仍显示当前登录账号，`/profile/?user=用户UUID` 允许访客查看对应作者的公开名字和头像。
 
 ## 失败时查看哪里
 

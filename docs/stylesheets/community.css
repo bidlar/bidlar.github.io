@@ -1,8 +1,43 @@
 .doc-community { border-top: 1px solid #8885; margin-top: 2rem; padding-top: 1rem; }
-.doc-community button { border: 1px solid #8888; border-radius: .3rem; padding: .35rem .7rem; margin: .2rem .4rem .2rem 0; cursor: pointer; }
+.doc-community button,
+.doc-community a.profile-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  box-sizing: border-box;
+  border: 1px solid #8888;
+  border-radius: .3rem;
+  padding: .35rem .7rem;
+  margin: .2rem .4rem .2rem 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+}
+.doc-community button:hover:not(:disabled),
+.doc-community a.profile-link:hover { background: var(--md-code-bg-color, #eee); color: inherit; }
+.doc-community button:focus-visible,
+.doc-community a.profile-link:focus-visible,
+.doc-community a.comment-author:focus-visible {
+  outline: 2px solid var(--md-accent-fg-color, #555);
+  outline-offset: 3px;
+}
 .doc-community button:disabled { opacity: .5; cursor: default; }
+.doc-community [hidden] { display: none !important; }
 .doc-community textarea { display: block; width: 100%; border: 1px solid #8888; border-radius: .3rem; padding: .6rem; background: transparent; color: inherit; }
 .doc-community article { padding: .7rem 0; border-bottom: 1px solid #8884; }
 .doc-community article p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.doc-community a.comment-author {
+  color: var(--md-typeset-a-color, #4051b5);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: .15em;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.doc-community a.comment-author:hover { color: var(--md-accent-fg-color, #555); }
 .doc-community small { opacity: .7; }
 .doc-community [role="status"] { min-height: 1.5em; }

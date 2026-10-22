@@ -21,6 +21,26 @@
   let authUserId;
   let profileGeneration = 0;
 
+  const firstText = (...values) => values.find(value => typeof value === "string" && value.trim())?.trim() || "";
+  const validUserId = value => typeof value === "string" &&
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
+
+  function githubProfile(user) {
+    const identity = user?.identities?.find(item => item.provider === "github")?.identity_data || {};
+    const metadata = user?.user_metadata || {};
+    return {
+      display_name: firstText(identity.full_name, identity.name, identity.user_name, identity.preferred_username,
+        metadata.full_name, metadata.name, metadata.user_name, metadata.preferred_username) || "GitHub member",
+      avatar_url: firstText(identity.avatar_url, metadata.avatar_url)
+    };
+  }
+
+  function authorProfileUrl(id) {
+    const url = new URL(profileUrl);
+    url.searchParams.set("user", id);
+    return url.href;
+  }
+
   function setProfileReturn(value) {
     try {
       if (value) window.sessionStorage.setItem(profileReturnKey, "1");
@@ -40,7 +60,12 @@
     const version = ++profileGeneration;
     const root = document.querySelector(".npu-profile");
     if (!root) return;
-    const alive = () => root.isConnected && version === profileGeneration;
+    const search = window.location.search || "";
+    const params = new URL(search, profileUrl).searchParams;
+    const publicProfile = params.has("user");
+    const requestedId = params.get("user");
+    const alive = () => root.isConnected && version === profileGeneration &&
+      (window.location.search || "") === search;
     if (!db) {
       root.textContent = "Your profile is unavailable right now. Please try again later.";
       return;
@@ -49,8 +74,8 @@
       <section class="npu-profile-card" aria-busy="true">
         <div class="npu-profile-avatar" aria-hidden="true"><span class="npu-profile-initial">?</span></div>
         <div class="npu-profile-info">
-          <p class="npu-profile-eyebrow">YOUR ACCOUNT</p>
-          <h2 class="npu-profile-name">Loading your profile…</h2>
+          <p class="npu-profile-eyebrow">${publicProfile ? "COMMUNITY MEMBER" : "YOUR ACCOUNT"}</p>
+          <h2 class="npu-profile-name">Loading profile…</h2>
           <p class="npu-profile-description"></p>
         </div>
       </section>
@@ -90,30 +115,16 @@
       $(".npu-profile-login").hidden = false;
       $(".npu-profile-logout").hidden = true;
     };
-    try {
-      const { data: sessionData, error: sessionError } = await db.auth.getSession();
-      if (!alive()) return;
-      if (sessionError) throw sessionError;
-      if (!sessionData.session?.user) { showGuest(); return; }
-      $(".npu-profile-logout").hidden = false;
-
-      const { data, error } = await db.auth.getUser();
-      if (!alive()) return;
-      if (error) throw error;
-      if (!data.user) { showGuest(); return; }
-      const identity = data.user.identities?.find(item => item.provider === "github")?.identity_data || {};
-      const metadata = data.user.user_metadata || {};
-      const firstText = (...values) => values.find(value => typeof value === "string" && value.trim())?.trim() || "";
-      const name = firstText(identity.full_name, identity.name, metadata.full_name, metadata.name,
-        identity.user_name, identity.preferred_username, metadata.user_name, metadata.preferred_username) || "GitHub member";
+    const showProfile = (profile) => {
+      const name = firstText(profile.display_name) || "GitHub member";
       $(".npu-profile-name").textContent = name;
       $(".npu-profile-initial").textContent = Array.from(name)[0].toLocaleUpperCase();
       $(".npu-profile-description").textContent = "Connected with GitHub";
       $(".npu-profile-card").setAttribute("aria-busy", "false");
-      const avatar = firstText(identity.avatar_url, metadata.avatar_url);
       try {
-        const url = new URL(avatar);
-        if (url.protocol === "https:" && url.hostname === "avatars.githubusercontent.com" && !url.username && !url.password) {
+        const url = new URL(profile.avatar_url);
+        if (url.protocol === "https:" && url.hostname === "avatars.githubusercontent.com" &&
+            !url.username && !url.password && !url.port) {
           const image = document.createElement("img");
           image.alt = "";
           image.width = 120;
@@ -124,10 +135,38 @@
           $(".npu-profile-avatar").append(image);
         }
       } catch (_) { /* Missing or invalid avatars use the name initial. */ }
+    };
+    const showMissing = () => {
+      $(".npu-profile-card").setAttribute("aria-busy", "false");
+      $(".npu-profile-name").textContent = "Profile not found";
+      $(".npu-profile-description").textContent = "This member's public profile is unavailable.";
+    };
+    try {
+      if (publicProfile) {
+        if (!validUserId(requestedId)) { showMissing(); return; }
+        const { data, error } = await db.from("profiles")
+          .select("id,display_name,avatar_url").eq("id", requestedId).maybeSingle();
+        if (!alive()) return;
+        if (error) throw error;
+        if (!data) { showMissing(); return; }
+        showProfile(data);
+        return;
+      }
+      const { data: sessionData, error: sessionError } = await db.auth.getSession();
+      if (!alive()) return;
+      if (sessionError) throw sessionError;
+      if (!sessionData.session?.user) { showGuest(); return; }
+      $(".npu-profile-logout").hidden = false;
+
+      const { data, error } = await db.auth.getUser();
+      if (!alive()) return;
+      if (error) throw error;
+      if (!data.user) { showGuest(); return; }
+      showProfile(githubProfile(data.user));
     } catch (_) {
       if (!alive()) return;
       $(".npu-profile-card").setAttribute("aria-busy", "false");
-      $(".npu-profile-name").textContent = "We couldn't load your profile";
+      $(".npu-profile-name").textContent = publicProfile ? "We couldn't load this profile" : "We couldn't load your profile";
       $(".npu-profile-description").textContent = "Check your connection and try again.";
       $(".npu-profile-retry").hidden = false;
     }
@@ -203,21 +242,45 @@
       if (error) throw error;
     });
 
+    let commentGeneration = 0;
     async function comments() {
+      const commentVersion = ++commentGeneration;
+      const current = () => alive() && commentVersion === commentGeneration;
       const { data, error } = await db.from("comments")
         .select("id,user_id,content,created_at,status").eq("page_id", pageId)
         .order("created_at", { ascending: false }).limit(50);
-      if (!alive()) return;
+      if (!current()) return;
       if (error) { $(".comments").textContent = "Could not load comments."; throw error; }
+      const authors = new Map();
+      const authorIds = [...new Set(data.map(row => row.user_id).filter(validUserId))];
+      if (authorIds.length) {
+        try {
+          const result = await db.from("profiles").select("id,display_name").in("id", authorIds);
+          if (!current()) return;
+          if (result.error) throw result.error;
+          for (const profile of result.data || []) authors.set(profile.id, profile);
+        } catch (_) {
+          if (!current()) return;
+          message("Author names are temporarily unavailable.");
+        }
+      }
       const list = $(".comments");
       list.replaceChildren();
       if (!data.length) list.textContent = "No comments yet.";
       for (const row of data) {
         const article = document.createElement("article");
         const meta = document.createElement("small");
-        meta.textContent = `${row.user_id === user?.id ? "You" : "Reader"} · ${new Date(row.created_at).toLocaleString()}`;
-        if (row.status === "pending") meta.textContent += " · Pending review (only visible to you)";
-        if (row.status === "rejected") meta.textContent += " · Not approved (only visible to you)";
+        const own = row.user_id === user?.id;
+        const profile = authors.get(row.user_id) || (own ? githubProfile(user) : null);
+        const author = document.createElement(validUserId(row.user_id) ? "a" : "span");
+        author.className = "comment-author";
+        author.textContent = firstText(profile?.display_name) || "GitHub member";
+        if (validUserId(row.user_id)) author.href = authorProfileUrl(row.user_id);
+        const details = document.createElement("span");
+        details.textContent = `${own ? " (You)" : ""} · ${new Date(row.created_at).toLocaleString()}`;
+        if (row.status === "pending") details.textContent += " · Pending review (only visible to you)";
+        if (row.status === "rejected") details.textContent += " · Not approved (only visible to you)";
+        meta.append(author, details);
         const text = document.createElement("p");
         text.textContent = row.content;
         article.append(meta, text);
