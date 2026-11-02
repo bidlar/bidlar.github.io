@@ -51,18 +51,9 @@
   font-size: .8rem;
 }
 .npu-profile-actions { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1rem; }
-.npu-profile button {
-  padding: .55rem 1rem;
-  border: 1px solid var(--md-default-fg-color--lighter, #8888);
-  border-radius: .35rem;
-  background: var(--md-default-bg-color, #fff);
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-}
-.npu-profile button:hover { background: var(--md-code-bg-color, #eee); }
+.npu-profile .md-button { max-width: 100%; }
 .npu-profile button:focus-visible { outline: 2px solid var(--md-accent-fg-color, #555); outline-offset: 3px; }
-.npu-profile button:disabled { opacity: .6; cursor: wait; }
+.npu-profile button:disabled { opacity: .6; cursor: wait; pointer-events: none; }
 .npu-profile [hidden] { display: none !important; }
 .npu-profile-message { min-height: 1.5em; font-size: .8rem; }
 @media (max-width: 480px) {

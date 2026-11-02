@@ -80,9 +80,9 @@
         </div>
       </section>
       <div class="npu-profile-actions">
-        <button type="button" class="npu-profile-login" hidden>Sign in with GitHub</button>
-        <button type="button" class="npu-profile-logout" hidden>Sign out</button>
-        <button type="button" class="npu-profile-retry" hidden>Try again</button>
+        <button type="button" class="npu-profile-login md-button md-button--primary" hidden>Sign in with GitHub</button>
+        <button type="button" class="npu-profile-logout md-button" hidden>Sign out</button>
+        <button type="button" class="npu-profile-retry md-button" hidden>Try again</button>
       </div>
       <p class="npu-profile-message" role="status" aria-live="polite"></p>`;
     const $ = (selector) => root.querySelector(selector);
@@ -188,14 +188,14 @@
     root.innerHTML = `
       <h2>Comments and bookmarks</h2>
       <p class="account">Checking sign-in status…</p>
-      <button type="button" class="login">Sign in with GitHub</button>
-      <button type="button" class="logout" hidden>Sign out</button>
-      <a class="profile-link" hidden>My profile</a>
-      <button type="button" class="bookmark" disabled>Bookmark this page</button>
+      <button type="button" class="login md-button md-button--primary">Sign in with GitHub</button>
+      <button type="button" class="logout md-button" hidden>Sign out</button>
+      <a class="profile-link md-button" hidden>My profile</a>
+      <button type="button" class="bookmark md-button" disabled>Bookmark this page</button>
       <p class="message" role="status" aria-live="polite"></p>
       <form>
         <label>Leave a comment<textarea required maxlength="2000" rows="3" disabled></textarea></label>
-        <button type="submit" disabled>Submit for review</button>
+        <button type="submit" class="md-button md-button--primary" disabled>Submit for review</button>
       </form>
       <p><small>Comments are reviewed before publication. Submit at most once every 60 seconds and 10 times in any 24 hours. Only you can see your pending or rejected comments.</small></p>
       <h3>Latest comments (up to 50)</h3><div class="comments">Loading…</div>
@@ -286,6 +286,7 @@
         if (row.user_id === user?.id) {
           const button = document.createElement("button");
           button.type = "button";
+          button.className = "md-button";
           button.textContent = "Delete my comment";
           button.onclick = () => run(button, async () => {
             const { error } = await db.from("comments").delete().eq("id", row.id);
