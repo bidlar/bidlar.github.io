@@ -1,0 +1,17 @@
+/* Shared black buttons for the Zensical modern theme. */
+.md-typeset .md-button,
+.md-typeset .md-button.md-button--primary {
+  background-color: #000;
+  border-color: #000;
+  color: #fff;
+}
+.md-typeset .md-button:not(:disabled):hover,
+.md-typeset .md-button:not(:disabled):focus {
+  background-color: #222;
+  border-color: #222;
+  color: #fff;
+}
+.md-typeset .md-button:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 3px;
+}

@@ -2,19 +2,3 @@
 .md-header__button.md-logo {
   display: none;
 }
-
-/* Monochrome buttons. */
-.md-typeset .md-button {
-  color: #000;
-  border-color: #000;
-}
-.md-typeset .md-button.md-button--primary {
-  background-color: #000;
-  color: #fff;
-}
-.md-typeset .md-button:hover,
-.md-typeset .md-button:focus {
-  background-color: #222;
-  border-color: #222;
-  color: #fff;
-}
