@@ -111,7 +111,6 @@
     const showGuest = () => {
       $(".npu-profile-card").setAttribute("aria-busy", "false");
       $(".npu-profile-name").textContent = "Make yourself at home";
-      $(".npu-profile-description").textContent = "Sign in to see your GitHub photo and name.";
       $(".npu-profile-login").hidden = false;
       $(".npu-profile-logout").hidden = true;
     };
